@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mybatis.slackproject.user-mapper">
+	<!-- DB에 ID가 있는지 확인 -->
+	<!-- <select id="findUsernameById" parameterType="String" resultType="UserDTO">
+		select * from JB_USER where userId = #{userId}
+	</select> -->
+</mapper>
