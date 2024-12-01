@@ -12,6 +12,7 @@
 <script src="../js/script.js"></script>
 </head>
 <body>
+	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
     <header>
         <ul>
             <li><a href="javascript:;">출퇴근</a></li>

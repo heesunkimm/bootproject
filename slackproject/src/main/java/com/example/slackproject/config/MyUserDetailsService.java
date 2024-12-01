@@ -10,13 +10,13 @@ import com.example.slackproject.dto.UserDTO;
 import com.example.slackproject.mapper.MemberServiceMapper;
 
 public class MyUserDetailsService implements UserDetailsService {
-	
+
 	private final MemberServiceMapper mapper;
     private final PasswordEncoder passwordEncoder;
-    
+
     public MyUserDetailsService(MemberServiceMapper mapper, PasswordEncoder passwordEncoder) {
-    	this.mapper = mapper;
-    	this.passwordEncoder = passwordEncoder;
+        this.mapper = mapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
 	@Override
@@ -28,7 +28,7 @@ public class MyUserDetailsService implements UserDetailsService {
 		return User.builder()
 				.username(userDTO.getUserId())
 				.password(userDTO.getUserPw())
-				.roles(userDTO.getUserRole())
+				.roles(userDTO.getUserRoles())
 				.build();
 	}
 }

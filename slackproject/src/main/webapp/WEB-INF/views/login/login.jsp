@@ -1,10 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Login</title>
 <link rel="stylesheet" type="text/css" href="../css/reset.css">
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -13,13 +14,13 @@
 <body>
     <section id="login" class="content">
         <form name="f" action="" method="post">
-            <p>로그인</p>
+        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <div class="input_box">
                 <label>
-                    <input type="text" placeholder="ID" required>
+                    <input type="text" name="userId" placeholder="ID" required>
                 </label>
                 <label>
-                    <input type="password" placeholder="PASSWORD" required>
+                    <input type="password" name="userPw" placeholder="PASSWORD" required>
                 </label>
                 <button class="login_btn" type="button">로그인</button>
             </div>
@@ -31,7 +32,7 @@
             </div>
 
             <div class="join_box">
-                <a href="javascript:;">회원가입</a>
+                <a href="/join">회원가입</a>
                 <!-- <ul class="find_box">
                     <li><a href="javascript:;">아이디찾기</a></li>
                     <li><a href="javascript:;">비밀번호찾기</a></li>
@@ -39,5 +40,12 @@
             </div>
         </form>
     </section>
+    <script>
+	 	// msg가 존재하는 경우 alert
+		let msg = "${msg}";
+		if (msg != "") {
+			alert(msg);
+		}
+    </script>
 </body>
 </html>

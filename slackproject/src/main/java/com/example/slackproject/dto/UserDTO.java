@@ -4,8 +4,8 @@ public class UserDTO {
 	private String userId;
 	private String userPw;
 	private String userName;
-	private String userBirth;
-	private String userRole;
+	private String userRoles;
+	private String userStatus;
 	private String userRegDate;
 	
 	public String getUserName() {
@@ -26,17 +26,17 @@ public class UserDTO {
 	public void setUserPw(String userPw) {
 		this.userPw = userPw;
 	}
-	public String getUserBirth() {
-		return userBirth;
+	public String getUserRoles() {
+		return userRoles;
 	}
-	public void setUserBirth(String userBirth) {
-		this.userBirth = userBirth;
+	public void setUserRoles(String userRoles) {
+		this.userRoles = userRoles;
 	}
-	public String getUserRole() {
-		return userRole;
+	public String getUserStatus() {
+		return userStatus;
 	}
-	public void setUserRole(String userRole) {
-		this.userRole = userRole;
+	public void setUserStatus(String userStatus) {
+		this.userStatus = userStatus;
 	}
 	public String getUserRegDate() {
 		return userRegDate;

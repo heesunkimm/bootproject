@@ -3,7 +3,17 @@
 
 <mapper namespace="mybatis.slackproject.user-mapper">
 	<!-- DB에 ID가 있는지 확인 -->
-	<!-- <select id="findUsernameById" parameterType="String" resultType="UserDTO">
-		select * from JB_USER where userId = #{userId}
-	</select> -->
+	<select id="findUsernameById" parameterType="String" resultType="UserDTO">
+		select * from slackUser where userId = #{userId}
+	</select>
+	
+	 <!-- 아이디 중복확인 -->
+	 <select id="idCheck" parameterType="String" resultType="int">
+	 	select count(*) from slackUser where userId = #{userId}
+	 </select>
+	 
+	<!-- 회원가입 -->
+	<insert id="joinUser" parameterType="java.util.Map">
+		insert into slackUser (userId, userPw, userName, userRoles) values(#{userId}, #{userPw}, #{userName}, #{userRoles})
+	</insert>
 </mapper>

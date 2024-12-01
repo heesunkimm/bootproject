@@ -14,8 +14,9 @@ import jakarta.servlet.DispatcherType;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+	
 	@Bean
-	public PasswordEncoder PassWordEncoder() {
+	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
 	
@@ -25,7 +26,8 @@ public class SecurityConfig {
 			.authorizeHttpRequests(request -> request
 					.dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
 					.requestMatchers("/css/**", "/images/**", "/js/**").permitAll()
-					.requestMatchers("/", "/login", "/join").permitAll()
+					.requestMatchers("/", "/login", "/join", "/idCheck").permitAll()
+					//.requestMatchers("/admin/**").hasRole("ADMIN")
 					.anyRequest().authenticated()
 			)
 			.formLogin(form -> form
@@ -33,7 +35,8 @@ public class SecurityConfig {
 					.loginProcessingUrl("/login")
 					.usernameParameter("userId")
 					.passwordParameter("userPw")
-					.defaultSuccessUrl("/index", true)
+//					.defaultSuccessUrl("/index", true)
+					.successHandler(new CustomAuthenticationSuccessHandler())
 					.failureUrl("/login")
 					.permitAll()
 			)
