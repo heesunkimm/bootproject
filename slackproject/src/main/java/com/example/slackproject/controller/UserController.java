@@ -25,7 +25,6 @@ public class UserController {
 
 	@Autowired
 	private UserMapper userMapper;
-	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
@@ -35,12 +34,13 @@ public class UserController {
 	}
 	
 	@GetMapping("/login")
-	public String Login(Model model, HttpServletRequest req) {
-		// CSRF 토큰 꺼내기
+	public String Login(HttpServletRequest req, @RequestParam(value="loginError", required = false) String loginError) {
 		CsrfToken csrfToken = (CsrfToken) req.getAttribute(CsrfToken.class.getName());
-		// CSRF 토큰 model 객체에 담아 뷰로 전달하기
-		model.addAttribute("_csrf", csrfToken);
+		req.setAttribute("_csrf", csrfToken);
 		
+		if(loginError != null) {
+			req.setAttribute("msg", "아이디나 비밀번호를 다시 확인해주세요.");
+		}
 		return "login/login";
 	}
 	
@@ -65,6 +65,7 @@ public class UserController {
 		}
 	}
 	
+	// 회원가입
 	@PostMapping("/join")
 	public String joinUser(HttpServletRequest req, @RequestParam Map<String, String> params) {
 		try {
@@ -95,6 +96,17 @@ public class UserController {
 			}
 		}catch(Exception e) {
 	        throw new RuntimeException("서비스 이용 중 문제가 발생했습니다. 잠시 후 다시 시도해주세요.");
+		}
+	}
+	
+	// 로그아웃
+	@GetMapping("/logout")
+	public String Logout(HttpServletRequest req, HttpServletResponse resp) {
+		try {
+			new SecurityContextLogoutHandler().logout(req, resp, SecurityContextHolder.getContext().getAuthentication());
+			return "redirect:/login";
+		}catch(Exception e) {
+			throw new RuntimeException("서비스 이용 중 문제가 발생했습니다. 잠시 후 다시 시도해주세요.");
 		}
 	}
 }

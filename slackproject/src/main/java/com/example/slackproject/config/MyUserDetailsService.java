@@ -4,31 +4,29 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 
 import com.example.slackproject.dto.UserDTO;
 import com.example.slackproject.mapper.MemberServiceMapper;
 
+@Component
 public class MyUserDetailsService implements UserDetailsService {
-
+	
 	private final MemberServiceMapper mapper;
-    private final PasswordEncoder passwordEncoder;
-
-    public MyUserDetailsService(MemberServiceMapper mapper, PasswordEncoder passwordEncoder) {
+	
+    public MyUserDetailsService(MemberServiceMapper mapper) {
         this.mapper = mapper;
-        this.passwordEncoder = passwordEncoder;
     }
-
+	
 	@Override
 	public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
-		UserDTO userDTO = new UserDTO();
-		userDTO = mapper.findUsernameById(userId);
-		
-		// ID가 DB에 있는 경우
-		return User.builder()
-				.username(userDTO.getUserId())
-				.password(userDTO.getUserPw())
-				.roles(userDTO.getUserRoles())
-				.build();
+		UserDTO dto = mapper.findUsernameById(userId);
+        
+        // 해당 ID가 DB에 있는 경우
+        return User.builder()
+                .username(dto.getUserId())
+                .password(dto.getUserPw())
+                .roles(dto.getUserRoles())
+                .build();
 	}
 }

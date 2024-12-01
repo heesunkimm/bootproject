@@ -13,21 +13,26 @@
 </head>
 <body>
     <section id="login" class="content">
-        <form name="f" action="" method="post">
+        <form name="f" action="/login" method="post">
         	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <div class="input_box">
                 <label>
-                    <input type="text" name="userId" placeholder="ID" required>
+	                <c:if test="${empty cookie['saveId']}">
+	                  	<input type="text" name="userId" value="" placeholder="ID" required>
+	              	</c:if>
+	              	<c:if test="${not empty cookie['saveId']}">
+	              		<input type="text" name="userId" value="${cookie['saveId'].value}" placeholder="ID" required>
+	              	</c:if>
                 </label>
                 <label>
                     <input type="password" name="userPw" placeholder="PASSWORD" required>
                 </label>
-                <button class="login_btn" type="button">로그인</button>
+                <button class="login_btn" type="submit">로그인</button>
             </div>
 
             <div class="save_box">
                 <label>
-                     아이디저장<input type="checkbox">
+                     아이디 저장 <input type="checkbox" name="saveId" value="on" <c:if test="${not empty cookie['saveId']}">checked</c:if>>
                 </label>
             </div>
 
@@ -41,7 +46,7 @@
         </form>
     </section>
     <script>
-	 	// msg가 존재하는 경우 alert
+		// msg가 존재하는 경우 alert
 		let msg = "${msg}";
 		if (msg != "") {
 			alert(msg);

@@ -27,7 +27,7 @@ public class SecurityConfig {
 					.dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
 					.requestMatchers("/css/**", "/images/**", "/js/**").permitAll()
 					.requestMatchers("/", "/login", "/join", "/idCheck").permitAll()
-					//.requestMatchers("/admin/**").hasRole("ADMIN")
+//					.requestMatchers("").hasRole("ADMIN")
 					.anyRequest().authenticated()
 			)
 			.formLogin(form -> form
@@ -35,13 +35,13 @@ public class SecurityConfig {
 					.loginProcessingUrl("/login")
 					.usernameParameter("userId")
 					.passwordParameter("userPw")
-//					.defaultSuccessUrl("/index", true)
+					// .defaultSuccessUrl("/index", true)
 					.successHandler(new CustomAuthenticationSuccessHandler())
-					.failureUrl("/login")
+					.failureUrl("/login?loginError")
 					.permitAll()
 			)
 			.logout(Customizer.withDefaults());
 	
-	return http.build();
+		return http.build();
 	}
 }

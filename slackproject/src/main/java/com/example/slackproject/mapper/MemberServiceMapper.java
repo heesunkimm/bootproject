@@ -12,11 +12,11 @@ public class MemberServiceMapper {
 	private final SqlSession sqlSession;
 	
 	@Autowired
-	public MemberServiceMapper(SqlSession sqlSession) {
+    public MemberServiceMapper(SqlSession sqlSession) {
         this.sqlSession = sqlSession;
     }
-	
-	public UserDTO findUsernameById(String userId) {
+
+    public UserDTO findUsernameById(String userId) {
 		return sqlSession.selectOne("findUsernameById", userId);
 	}
 }
