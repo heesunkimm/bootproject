@@ -3,7 +3,6 @@ package com.example.slackproject.controller;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.slackproject.dto.AttendDTO;
 import com.example.slackproject.mapper.MainMapper;
+import com.example.slackproject.mapper.SlackService;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -25,6 +25,9 @@ public class MainController {
 	
 	@Autowired
 	private MainMapper mapper;
+	
+	@Autowired
+	private SlackService slackService;
 	
 	// 출퇴근 상태
 	private void setAttentStatus(HttpServletRequest req, AttendDTO dto) {
@@ -51,14 +54,20 @@ public class MainController {
 		try {
 			// 오늘 출퇴근 여부 확인
 			AttendDTO dto = mapper.attendCheck(user.getUsername());
+			String userName = mapper.loginUserName(user.getUsername());
 			
 			if(dto == null || dto.getLeaveWorkTime() != null) {
 				// 출근&재출근 처리
 				Map<String, Object> params = new HashMap<>();
 				params.put("userId", user.getUsername());
 				params.put("startWorkTime", checkTime);
-//				params.put("attendMemo", attendMemo);
 				mapper.insertAttend(params);
+				
+				// 슬랙 출근 알림 전송
+				String[] startTime = checkTime.split(" ");
+				String message = String.format("%s님이 %s에 출근하였습니다.", userName, startTime[1]);
+				System.out.println(message);
+				slackService.sendMessage(message);
 			}else if (dto.getStartWorkTime() != null && dto.getLeaveWorkTime() == null) {
 				// 퇴근처리
                 Date startWorkTime = dto.getStartWorkTime();
@@ -106,6 +115,12 @@ public class MainController {
 				if (res == 0) {
 		            throw new RuntimeException("퇴근 처리 중 오류가 발생했습니다. 다시 시도해주세요.");
 		        }
+				
+				// 슬랙 퇴근 알 전송
+				String[] endTime = checkTime.split(" ");
+				String message = String.format("%s님이 %s에 퇴근하였습니다. 오늘 누적 근무시간은 %s입니다.", userName, endTime[1], totalHours);
+				System.out.println(message);
+				slackService.sendMessage(message);
 			}
 			setAttentStatus(req, mapper.attendCheck(user.getUsername()));
 			return "redirect:index";

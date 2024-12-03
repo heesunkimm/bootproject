@@ -30,7 +30,7 @@ public class SlackService {
 		ChatPostMessageResponse response = slack.methods(slackToken).chatPostMessage(request);
 		
 		if(!response.isOk()) {
-			throw new RuntimeException("Error Message: " + response.getError());
+			throw new RuntimeException(response.getError());
 		}
 	}
 }

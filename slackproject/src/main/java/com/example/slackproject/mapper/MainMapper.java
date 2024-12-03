@@ -14,6 +14,10 @@ public class MainMapper {
 	@Autowired
 	private SqlSession sqlSession;
 	
+	// 로그인 유저이름 가져오기
+	public String loginUserName(String userId) {
+		return sqlSession.selectOne("loginUserName", userId);
+	}
 	// 오늘날짜 출퇴근여부 확인
 	public AttendDTO attendCheck(String userId) {
 		return sqlSession.selectOne("attendCheck", userId);
