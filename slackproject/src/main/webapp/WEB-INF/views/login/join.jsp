@@ -5,10 +5,10 @@
 <head>
 <meta charset="UTF-8">
 <title>Join</title>
-<link rel="stylesheet" type="text/css" href="../css/reset.css">
-<link rel="stylesheet" type="text/css" href="../css/style.css">
+<link rel="stylesheet" type="text/css" href="../../css/reset.css">
+<link rel="stylesheet" type="text/css" href="../../css/style.css">
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script src="../js/script.js"></script>
+<script src="../../js/script.js"></script>
 </head>
 <body>
 	<section id="join" class="content">

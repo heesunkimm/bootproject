@@ -11,7 +11,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
-
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest req, HttpServletResponse resp,
 			Authentication authentication) throws IOException, ServletException {
@@ -29,8 +28,6 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 	        cookie.setPath("/");
 	        resp.addCookie(cookie);
 	    }
-	    
 	    resp.sendRedirect("/index");
 	}
-
 }
