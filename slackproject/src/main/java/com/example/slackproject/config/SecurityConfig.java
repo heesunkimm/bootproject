@@ -25,10 +25,13 @@ public class SecurityConfig {
 		http
 			.authorizeHttpRequests(request -> request
 					.dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
-					.requestMatchers("/css/**", "/images/**", "/js/**").permitAll()
-					.requestMatchers("/", "/login", "/join", "/idCheck").permitAll()
+					.requestMatchers("/resources/**").permitAll()
+					.requestMatchers("/authoerror", "/error", "/", "/login", "/join", "/idCheck").permitAll()
 //					.requestMatchers("").hasRole("ADMIN")
 					.anyRequest().authenticated()
+			)
+			.exceptionHandling(exception -> exception
+					.authenticationEntryPoint(new CustomAuthenticationEntryPoint())
 			)
 			.formLogin(form -> form
 					.loginPage("/login")
