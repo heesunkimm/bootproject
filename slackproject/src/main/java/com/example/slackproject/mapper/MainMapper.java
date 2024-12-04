@@ -22,20 +22,21 @@ public class MainMapper {
 	public AttendDTO attendCheck(String userId) {
 		return sqlSession.selectOne("attendCheck", userId);
 	}
-	
 	// 출근
 	public int insertAttend(Map<String, Object> params) {
 		return sqlSession.insert("insertAttend", params);
 	}
-	
 	// 퇴근
 	public int updateAttend(Map<String, Object> params) {
 		return sqlSession.update("updateAttend", params);
 	}
-	
 	// 최근 출퇴근 기록 조회
 	public AttendDTO latestAttend(String userId) {
 		return sqlSession.selectOne("latestAttend", userId);
+	}
+	// 일정등록
+	public int insertSchedule(Map<String, Object> params) {
+		return sqlSession.insert("insertSchedule", params);
 	}
 
 }

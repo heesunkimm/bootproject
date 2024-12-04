@@ -6,7 +6,6 @@
 	<select id="loginUserName" parameterType="String" resultType="String">
 		select userName from slackUser where userId = #{userId}
 	</select>
-	
 	<!-- 오늘날짜 출근여부 확인 -->
 	<select id="attendCheck" parameterType="String" resultType="AttendDTO">
 		select a.* 
@@ -21,14 +20,12 @@
 		insert into slackAttend (attendId, userId, startWorkTime) 
 		values (attendSeq.nextval, #{userId}, TO_DATE(#{startWorkTime}, 'YYYY-MM-DD HH24:MI:SS'))
 	</insert>
-	
 	<!-- 퇴근 -->
 	<update id="updateAttend" parameterType="java.util.Map">
 		update slackAttend set 
 		attendMemo = #{attendMemo}, leaveWorkTime = TO_DATE(#{leaveWorkTime}, 'YYYY-MM-DD HH24:MI:SS'), workHours = #{workHours} 
 		where attendId = #{attendId}
 	</update>
-	
 	<!-- 최근 출퇴근 기록 조회 -->
 	<select id="latestAttend" parameterType="String" resultType="AttendDTO">
 	    select * 
@@ -37,4 +34,9 @@
 	    order by attendDate desc 
 	    offset 1 row fetch next 1 row only
 	</select>
+	<!-- 일정등록 -->
+	<insert id="insertSchedule" parameterType="java.util.Map">
+		insert into slackSchedule (scheduledId, userId, scheduleTitle, scheduleContent, scheduleDate, scheduleTime) 
+		values (scheduleSeq.nextval, #{userId}, #{scheduleTitle}, #{scheduleContent}, TO_DATE(#{scheduleDate}, 'YYYY-MM-DD'), #{scheduleTime})
+	</insert>
 </mapper>

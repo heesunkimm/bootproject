@@ -1,6 +1,7 @@
 package com.example.slackproject.controller;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,7 +30,7 @@ public class MainController {
 	@Autowired
 	private SlackService slackService;
 	
-	// 출퇴근 상태
+	// 출퇴근 상태 관리
 	private void setAttentStatus(HttpServletRequest req, AttendDTO dto) {
 		if (dto == null) {
 	        req.setAttribute("StartWork", true);
@@ -66,7 +67,6 @@ public class MainController {
 				// 슬랙 출근 알림 전송
 				String[] startTime = checkTime.split(" ");
 				String message = String.format("%s님이 %s에 출근하였습니다.", userName, startTime[1]);
-				System.out.println(message);
 				slackService.sendMessage(message);
 			}else if (dto.getStartWorkTime() != null && dto.getLeaveWorkTime() == null) {
 				// 퇴근처리
@@ -116,14 +116,44 @@ public class MainController {
 		            throw new RuntimeException("퇴근 처리 중 오류가 발생했습니다. 다시 시도해주세요.");
 		        }
 				
-				// 슬랙 퇴근 알 전송
+				// 슬랙 퇴근 알람 전송
 				String[] endTime = checkTime.split(" ");
 				String message = String.format("%s님이 %s에 퇴근하였습니다. 오늘 누적 근무시간은 %s입니다.", userName, endTime[1], totalHours);
-				System.out.println(message);
 				slackService.sendMessage(message);
 			}
 			setAttentStatus(req, mapper.attendCheck(user.getUsername()));
 			return "redirect:index";
+		}catch(Exception e) {
+			throw new RuntimeException("서비스 이용 중 문제가 발생했습니다. 잠시 후 다시 시도해주세요.");
+		}
+	}
+	
+	@GetMapping("/schedule")
+	public String Schedule() {
+		return "schedule";
+	}
+	
+	@PostMapping("/schedule")
+	public String Schedule(HttpServletRequest req, @AuthenticationPrincipal User user, @RequestParam String scheduleTitle, 
+			@RequestParam(value="scheduleContent", required = false) String scheduleContent, 
+			@RequestParam String scheduleDate, @RequestParam String scheduleTime) {
+		try {
+			String userName = mapper.loginUserName(user.getUsername());
+			Map<String, Object> params = new HashMap<>();
+			params.put("userId", user.getUsername());
+			params.put("scheduleTitle", scheduleTitle);
+			params.put("scheduleContent", scheduleContent);
+			params.put("scheduleDate", scheduleDate);
+			params.put("scheduleTime", scheduleTime);
+			
+			int res = mapper.insertSchedule(params);
+			if (res == 0) {
+	            throw new RuntimeException("일정 등록 중 오류가 발생했습니다. 다시 시도해주세요.");
+	        }
+			// 슬랙 일정설정 알람 전송
+			String message = String.format("%s님이 [%s]일정을 등록했습니다. \n%s %s에 알람 설정되었습니다.", userName, scheduleTitle, scheduleDate, scheduleTime);
+			slackService.sendMessage(message);
+			return "redirect:schedule";
 		}catch(Exception e) {
 			throw new RuntimeException("서비스 이용 중 문제가 발생했습니다. 잠시 후 다시 시도해주세요.");
 		}
