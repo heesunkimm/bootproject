@@ -1,13 +1,18 @@
 package com.example.slackproject.controller;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalTime;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
@@ -16,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.slackproject.dto.AttendDTO;
+import com.example.slackproject.dto.ScheduleDTO;
 import com.example.slackproject.mapper.MainMapper;
 import com.example.slackproject.mapper.SlackService;
 
@@ -133,6 +139,7 @@ public class MainController {
 		return "schedule";
 	}
 	
+	// 일정등록
 	@PostMapping("/schedule")
 	public String Schedule(HttpServletRequest req, @AuthenticationPrincipal User user, @RequestParam String scheduleTitle, 
 			@RequestParam(value="scheduleContent", required = false) String scheduleContent, 
@@ -154,6 +161,34 @@ public class MainController {
 			String message = String.format("%s님이 [%s]일정을 등록했습니다. \n%s %s에 알람 설정되었습니다.", userName, scheduleTitle, scheduleDate, scheduleTime);
 			slackService.sendMessage(message);
 			return "redirect:schedule";
+		}catch(Exception e) {
+			throw new RuntimeException("서비스 이용 중 문제가 발생했습니다. 잠시 후 다시 시도해주세요.");
+		}
+	}
+	
+	// 일정알람 (1시간주기)
+	@Scheduled(cron = "0 0 0/1 * * *")
+	private void scheduleAlarm() {
+		try {
+			LocalDateTime now = LocalDateTime.now();
+	        String[] today = now.toString().split("T");
+	        String[] timeStr = today[1].split(":");
+	        String currentTime = String.format("%s:%s", timeStr[0], timeStr[1]);
+	        
+	        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    		LocalDate localDate = LocalDate.parse(today[0], format);
+	        Date formatToday = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+	        // 등록일정확인
+			List<ScheduleDTO> list = mapper.scheduleList(formatToday);
+			for(ScheduleDTO dto : list) {
+				if(dto.getScheduleDate().equals(formatToday)) {
+					if(dto.getScheduleTime().equals(currentTime)) {
+						String message = String.format("[알림] 등록된 %s 진행시간입니다." ,dto.getScheduleTitle());
+						slackService.sendMessage(message);
+					}
+				}
+			}
 		}catch(Exception e) {
 			throw new RuntimeException("서비스 이용 중 문제가 발생했습니다. 잠시 후 다시 시도해주세요.");
 		}

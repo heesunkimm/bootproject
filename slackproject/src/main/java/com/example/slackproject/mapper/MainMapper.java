@@ -1,5 +1,6 @@
 package com.example.slackproject.mapper;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.slackproject.dto.AttendDTO;
+import com.example.slackproject.dto.ScheduleDTO;
 
 @Service
 public class MainMapper {
@@ -37,6 +39,10 @@ public class MainMapper {
 	// 일정등록
 	public int insertSchedule(Map<String, Object> params) {
 		return sqlSession.insert("insertSchedule", params);
+	}
+	// 등록일정확인
+	public List<ScheduleDTO> scheduleList(Date scheduleDate) {
+		return sqlSession.selectList("scheduleList", scheduleDate);
 	}
 
 }
