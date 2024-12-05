@@ -41,7 +41,7 @@ public class SecurityConfig {
 					.passwordParameter("userPw")
 					// .defaultSuccessUrl("/index", true)
 					.successHandler(new CustomAuthenticationSuccessHandler())
-					.failureUrl("/login?loginError")
+					.failureHandler(new CustomAuthenticationFailureHandler())
 					.permitAll()
 			)
 			.logout(Customizer.withDefaults());

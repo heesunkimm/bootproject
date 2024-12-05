@@ -36,13 +36,18 @@ public class UserController {
 	}
 	
 	@GetMapping("/login")
-	public String Login(HttpServletRequest req, @RequestParam(value="loginError", required = false) String loginError) {
+	public String Login(HttpServletRequest req, 
+			@RequestParam(value = "loginError", required = false) String loginError,
+            @RequestParam(value = "approvalFail", required = false) String approvalFail) {
 		CsrfToken csrfToken = (CsrfToken) req.getAttribute(CsrfToken.class.getName());
 		req.setAttribute("_csrf", csrfToken);
 		
-		if(loginError != null) {
-			req.setAttribute("msg", "아이디나 비밀번호를 다시 확인해주세요.");
-		}
+		if (loginError != null) {
+	        req.setAttribute("msg", "아이디나 비밀번호를 다시 확인해주세요.");
+	    }
+	    if (approvalFail != null) {
+	        req.setAttribute("msg", "승인대기중입니다.");
+	    }
 		return "login/login";
 	}
 	

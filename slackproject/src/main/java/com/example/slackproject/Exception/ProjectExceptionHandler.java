@@ -16,11 +16,19 @@ public class ProjectExceptionHandler {
         req.setAttribute("msg", "이 페이지에 접근할 권한이 없습니다.");
         return "error/authoerror";
     }
-    
+
+	// 404 예외 처리
     @ExceptionHandler(NoHandlerFoundException.class)
     public String NoHandlerFoundException(HttpServletRequest req, NoHandlerFoundException e) {
     	req.setAttribute("msg", "존재하지 않는 페이지입니다.");
     	return "error/error";
+    }
+    
+    // CustomAuthenticationException 예외 처리 (로그인 관련)
+    @ExceptionHandler(CustomAuthenticationException.class)
+    public String handleCustomAuthenticationException(HttpServletRequest req, CustomAuthenticationException e) {
+        req.setAttribute("msg", e.getMessage());
+        return "login/login";
     }
 
     // 모든 예외 처리

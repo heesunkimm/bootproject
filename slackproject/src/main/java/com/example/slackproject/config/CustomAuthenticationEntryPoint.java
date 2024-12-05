@@ -14,6 +14,6 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
 	@Override
 	public void commence(HttpServletRequest req, HttpServletResponse resp,
 			AuthenticationException authException) throws IOException, ServletException {
-		resp.sendRedirect("/authoerror");
+		resp.sendRedirect("error/authoerror");
 	}
 }
