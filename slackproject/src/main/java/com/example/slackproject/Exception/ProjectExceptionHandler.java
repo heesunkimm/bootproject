@@ -1,6 +1,6 @@
 package com.example.slackproject.Exception;
 
-import org.springframework.security.web.firewall.RequestRejectedException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.NoHandlerFoundException;
@@ -11,11 +11,11 @@ import jakarta.servlet.http.HttpServletRequest;
 public class ProjectExceptionHandler {
 
     // 권한부족 예외처리
-//    @ExceptionHandler(AccessDeniedException.class)
-//    public String AccessDeniedHandlerException(HttpServletRequest req, AccessDeniedException e) {
-//        req.setAttribute("msg", "이 페이지에 접근할 권한이 없습니다.");
-//        return "error";
-//    }
+	@ExceptionHandler(AccessDeniedException.class)
+    public String AccessDeniedHandlerException(HttpServletRequest req, AccessDeniedException e) {
+        req.setAttribute("msg", "이 페이지에 접근할 권한이 없습니다.");
+        return "error/authoerror";
+    }
     
     @ExceptionHandler(NoHandlerFoundException.class)
     public String NoHandlerFoundException(HttpServletRequest req, NoHandlerFoundException e) {

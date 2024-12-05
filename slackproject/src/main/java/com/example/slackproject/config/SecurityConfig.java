@@ -27,11 +27,12 @@ public class SecurityConfig {
 					.dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
 					.requestMatchers("/resources/**").permitAll()
 					.requestMatchers("/authoerror", "/error", "/", "/login", "/join", "/idCheck").permitAll()
-//					.requestMatchers("").hasRole("ADMIN")
+					.requestMatchers("/userManagement", "/userStatusUpdate").hasRole("ADMIN")
 					.anyRequest().authenticated()
 			)
 			.exceptionHandling(exception -> exception
 					.authenticationEntryPoint(new CustomAuthenticationEntryPoint())
+
 			)
 			.formLogin(form -> form
 					.loginPage("/login")
