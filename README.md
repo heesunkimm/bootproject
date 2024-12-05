@@ -18,32 +18,32 @@
  - 글로벌 예외처리를 구현하여 권한부족, 404에러, 인증관련 오류 예외처리
 
 ## 파일구조
-slackproject/
-├── src/
-│ ├── main/
-│ │ ├── java/
-│ │ │ └── com/
-│ │ │  └── example/
-│ │ │   └── slackproject/
-│ │ │    ├── controller/
-│ │ │    ├── service/
-│ │ │    ├── config/
-│ │ │    ├── Exception/
-│ │ │    └── dto/
-│ │ ├── resources/
-│ │ │ ├── mybatis/
-│ │ │ ├── static/
-│ │ │ ├── templates/
-│ │ │ └── application.properties
-│ ├── webapp/
-│ │ └── WEB-INF/
-│ │   └── views/
-│ └── test/
-├── .gitignore
-├── mvnw
-├── mvnw.cmd
-├── pom.xml
-└── README.md
+    slackproject/
+    ├── src/
+    │ ├── main/
+    │ │ ├── java/
+    │ │ │ └── com/
+    │ │ │  └── example/
+    │ │ │   └── slackproject/
+    │ │ │    ├── controller/
+    │ │ │    ├── service/
+    │ │ │    ├── config/
+    │ │ │    ├── Exception/
+    │ │ │    └── dto/
+    │ │ ├── resources/
+    │ │ │ ├── mybatis/
+    │ │ │ ├── static/
+    │ │ │ ├── templates/
+    │ │ │ └── application.properties
+    │ ├── webapp/
+    │ │ └── WEB-INF/
+    │ │   └── views/
+    │ └── test/
+    ├── .gitignore
+    ├── mvnw
+    ├── mvnw.cmd
+    ├── pom.xml
+    └── README.md
 
 ## 기술 스택
  - Environment
