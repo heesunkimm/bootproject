@@ -19,7 +19,7 @@
 		<div>
 			<h2>접근권한이 없습니다. 로그인 후 이용해주세요.</h2>
 			<ul style="text-align: center;">
-				<li><a href="/login">로그인페이지로 돌아가기</a></li>
+				<li><a href="/index">홈으로 돌아가기</a></li>
 			</ul>
 		</div>
     </section>

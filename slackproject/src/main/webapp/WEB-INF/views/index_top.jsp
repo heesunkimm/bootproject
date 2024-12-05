@@ -15,9 +15,9 @@
 <body>
     <header>
         <ul>
-            <li><a href="javascript:;">출퇴근</a></li>
-            <li><a href="javascript:;">일정등록</a></li>
-            <li><a href="javascript:;">유저관리</a></li>
-            <li><a href="/logout">로그아웃</a></li>
+            <li><a href="index">출퇴근</a></li>
+            <li><a href="schedule">일정등록</a></li>
+            <li><a href="userManagement">유저관리</a></li>
+            <li><a href="logout">로그아웃</a></li>
         </ul>
     </header>
