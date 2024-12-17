@@ -64,3 +64,4 @@
  
  - Development
    - Frontend: jQuery, JSP, AJAX
+   - Backend: Spring Boot, MyBatis
